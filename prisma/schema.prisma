@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  employee_id   String        @id @db.VarChar(16)
+  nama          String        @db.VarChar(32)
+  tanggal_lahir DateTime      @db.Date
+  email         String        @unique @db.VarChar(32)
+  password      String        @db.VarChar(255)
+  role          String        @db.VarChar(10)
+  Transaction   Transaction[]
+  Recommendation  Recommendation[]
+}
+
+model Product {
+  product_id        String              @id @db.VarChar(10)
+  nama_produk       String              @db.VarChar(48)
+  kategori          String              @db.VarChar(16)
+  deskripsi         String              @db.VarChar(255)
+  harga             Int
+  Coupon            Coupon[]
+  TransactionDetail TransactionDetail[]
+}
+
+model Membership {
+  membership_id String     @id @db.VarChar(10)
+  deskripsi     String     @db.VarChar(128)
+  minimum_poin  Int
+  Customer      Customer[]
+}
+
+model Coupon {
+  coupon_id    String        @id @db.VarChar(8)
+  nama_kupon   String        @db.VarChar(32)
+  product_id   String        @db.VarChar(10)
+  diskon       Int
+  tgl_mulai    DateTime      @db.Date
+  tgl_berakhir DateTime      @db.Date
+  product      Product       @relation(fields: [product_id], references: [product_id])
+  CouponOwner  CouponOwner[]
+}
+
+model Customer {
+  customer_id     Int               @id @default(autoincrement())
+  nama            String            @db.VarChar(32)
+  kota            String            @db.VarChar(24)  
+  email           String            @unique @db.VarChar(64) 
+  tanggal_lahir   DateTime          @db.Date
+  point           Int
+  membership_id   String            @db.VarChar(10)
+  membership      Membership        @relation(fields: [membership_id], references: [membership_id])
+  CustomerAccount CustomerAccount[]
+  CouponOwner     CouponOwner[]
+  Transaction     Transaction[]
+}
+
+model CustomerAccount {
+  customer_id Int      @unique @db.Integer
+  handphone   String   @unique @db.VarChar(13)
+  password    String   @db.VarChar(255)
+  customer    Customer @relation(fields: [customer_id], references: [customer_id])
+}
+
+model CouponOwner {
+  id          Int      @id @default(autoincrement())
+  coupon_id   String   @db.VarChar(8)
+  customer_id Int      @db.Integer
+  isUsed      Boolean
+  coupon      Coupon   @relation(fields: [coupon_id], references: [coupon_id])
+  customer    Customer @relation(fields: [customer_id], references: [customer_id])
+}
+
+model Transaction {
+  trx_id            String              @id @db.VarChar(32)
+  tgl_transaksi     DateTime            @db.Date
+  point             Int
+  nilai_transaksi   Int
+  customer_id       Int                 @db.Integer
+  employee_id       String              @db.VarChar(16)
+  customer          Customer            @relation(fields: [customer_id], references: [customer_id])
+  employee          Employee            @relation(fields: [employee_id], references: [employee_id])
+  TransactionDetail TransactionDetail[]
+}
+
+model TransactionDetail {
+  id          Int         @id @default(autoincrement())
+  trx_id      String      @db.VarChar(32)
+  product_id  String      @db.VarChar(10)
+  kuantiti    Int
+  transaction Transaction @relation(fields: [trx_id], references: [trx_id])
+  product     Product     @relation(fields: [product_id], references: [product_id])
+}
+
+model Recommendation {
+  id                Int   @id @default(autoincrement())
+  antecedent        Json  @db.Json
+  consequent        Json  @db.Json
+  support           Float @db.Real
+  confidence        Float @db.Real
+  lift_ratio        Float @db.Real
+  employee_id       String  @db.VarChar(16)
+  employee          Employee @relation(fields: [employee_id], references: [employee_id]) 
+}
