@@ -150,7 +150,7 @@ async function readPdfToText(buffer, employee_id: string) {
       });
     });
 
-    let commaCsv = ','.repeat(8 - csv.length);
+    // let commaCsv = ','.repeat(8 - csv.length);
 
     const [db, status] = await createDataTransaction(
       {
@@ -162,16 +162,11 @@ async function readPdfToText(buffer, employee_id: string) {
       employee_id
     );
 
-    console.log('----- ATTRIBUTE');
-    console.log(db);
-
-    console.log('----- CSV');
-    console.log(csv);
     if (status) {
-      fs.appendFileSync(
-        '/home/fadelfirmansyah/Documents/Lumos Final Project/lumos-api-ts/api/transaction/lumos.csv',
-        csv.toString().toUpperCase() + commaCsv + '\n'
-      );
+      // fs.appendFileSync(
+      //   '/home/fadelfirmansyah/Documents/Lumos Final Project/lumos-api-ts/api/transaction/lumos.csv',
+      //   csv.toString().toUpperCase() + commaCsv + '\n'
+      // );
 
       return {
         id: orderDate.concat('-').concat(refOrder),
