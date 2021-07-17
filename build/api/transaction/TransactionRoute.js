@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const TransactionController_1 = require("./TransactionController");
+const TrxRoute = express_1.Router();
+TrxRoute.post('/transfer', TransactionController_1.pdfToTextController);
+TrxRoute.get('/read', TransactionController_1.readAllTransactionController);
+TrxRoute.get('/read/:id', TransactionController_1.findByIdController);
+TrxRoute.get('/custread/:cust', TransactionController_1.trxByCustController);
+TrxRoute.post('/recommendation', TransactionController_1.generateRecController);
+TrxRoute.get('/listrecommendation', TransactionController_1.listRecommendationController);
+TrxRoute.put('/claim/:trx', TransactionController_1.claimController);
+TrxRoute.post('/export', TransactionController_1.exportCsvController);
+exports.default = TrxRoute;

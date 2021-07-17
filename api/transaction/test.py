@@ -13,7 +13,7 @@ from mlxtend.frequent_patterns import apriori, fpmax, fpgrowth
 from mlxtend.frequent_patterns import association_rules
 
 
-df = pd.read_csv('/home/fadelfirmansyah/Documents/Lumos Final Project/lumos-api-prod/api/transaction/lumos.csv', header=None, dtype=None)
+df = pd.read_csv('/home/fadelfirmansyah/Documents/Lumos Final Project/lumos-api-prod/api/transaction/test.csv', header=None, dtype=None)
 
 
 df = df.replace(np.nan, '')
@@ -36,4 +36,5 @@ minx = float(sys.argv[1])
 conf = float(sys.argv[2])
 
 item = apriori(frame, min_support=minx, use_colnames=True)
+print(item)
 print(association_rules(item, metric="confidence", min_threshold=conf).to_string())

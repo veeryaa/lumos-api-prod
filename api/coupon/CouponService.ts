@@ -11,10 +11,11 @@ export interface CouponBody extends Body {
   nama_kupon?: string;
   product_id?: string;
   diskon?: number;
+  point?: number;
   tgl_mulai?: string;
   tgl_berakhir?: string;
-}
-
+}  
+   
 async function createCoupon(body: CouponBody): Promise<[Coupon, string | boolean]> {
   const [result, status] = await RepoCreateCoupon(body);
 
@@ -26,7 +27,7 @@ async function findCouponById(params: string): Promise<[Coupon, string | boolean
 
   return [result, status];
 }
-
+  
 async function readAllCoupon(): Promise<[Coupon[], string | boolean]> {
   const [result, status] = await RepoReadAllCoupon();
 

@@ -98,6 +98,9 @@ async function readTransactionByDate(
           },
         },
       },
+      orderBy: {
+        trx_id: 'asc'
+      }
     });
 
     const read: any[] = await prisma.transaction.findMany({
@@ -121,6 +124,9 @@ async function readTransactionByDate(
             }
           }
         }
+      },
+      orderBy: {
+        trx_id: 'asc'
       }
     });
 
@@ -136,11 +142,11 @@ async function readAllTransaction(
 ): Promise<[{ read: Transaction[]; count: number }, boolean | string]> {
   try {
     const readCount = await prisma.transaction.count();
-    console.log(page);
+    
     if (Number(page) > 0) {
       const read: Transaction[] = await prisma.transaction.findMany({
-        skip: Number(page) * 25 - 25,
-        take: 25,
+        skip: Number(page) * 100 - 100,
+        take: 100,
       });
 
       return [{ read, count: readCount }, true];

@@ -50,6 +50,9 @@ async function readAllProduct(
       const read: Product[] = await prisma.product.findMany({
         skip: Number(page) * 10 - 10,
         take: 10,
+        orderBy: {
+          product_id: 'asc'
+        }
       });
 
       return [{ read, count: readCount }, true];

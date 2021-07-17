@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const ProductController_1 = require("./ProductController");
+const ProductRoute = express_1.Router();
+ProductRoute.post('/create', ProductController_1.createController);
+ProductRoute.get('/read', ProductController_1.readAllController);
+ProductRoute.get('/read/:kategori', ProductController_1.readAllByKategori);
+ProductRoute.get('/find/:id', ProductController_1.findByIdController);
+ProductRoute.put('/update/:id', ProductController_1.updateController);
+ProductRoute.post('/enum', ProductController_1.generateEnumController);
+exports.default = ProductRoute;

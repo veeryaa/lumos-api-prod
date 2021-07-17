@@ -40,7 +40,8 @@ model Coupon {
   nama_kupon   String        @db.VarChar(32)
   product_id   String        @db.VarChar(10)
   diskon       Int
-  tgl_mulai    DateTime      @db.Date
+  point        Int           @db.Integer
+  tgl_mulai    DateTime      @db.Date 
   tgl_berakhir DateTime      @db.Date
   product      Product       @relation(fields: [product_id], references: [product_id])
   CouponOwner  CouponOwner[]

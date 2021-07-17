@@ -33,11 +33,15 @@ async function findMembershipById(params: string): Promise<[Membership, string |
   } catch (err) {
     return [err, 'Error'];
   }
-}
+} 
 
 async function readAllMembership(): Promise<[Membership[], string | boolean]> {
   try {
-    const read = await prisma.membership.findMany();
+    const read = await prisma.membership.findMany({
+      orderBy: {
+        minimum_poin: 'asc'
+      }
+    });
 
     return [read, true];
   } catch (err) {

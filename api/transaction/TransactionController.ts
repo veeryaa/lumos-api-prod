@@ -19,7 +19,7 @@ async function exportCsvController(req: Request, res: Response) {
 
   const [result, status] = await ServiceExportTrx(tglawal, tglakhir);
 
-  if (status !== 'Error') {
+  if (status !== 'Error') { 
     const csv = [];
 
     for (let i = 0; i < result.read.length; i++) {
@@ -35,7 +35,7 @@ async function exportCsvController(req: Request, res: Response) {
       return e.toString() + ','.repeat(8 - e.length) + '\n';  
     });
 
-    fs.writeFileSync('/home/fadelfirmansyah/Documents/Lumos Final Project/lumos-api-ts/api/transaction/dataset.csv', data.join(''));
+    fs.writeFileSync('/home/fadelfirmansyah/Documents/Lumos Final Project/lumos-api-prod/api/transaction/lumos.csv', data.join(''));
 
     res.status(200).json({
       status: 200,
@@ -101,10 +101,9 @@ type AssocRule = {
 
 async function generateRecController(req: Request, res: Response) {
   const { support, confidence, total_data, employee_id } = req.body;
-
-  console.log(req.body);
+  
   cps.exec(
-    `/home/fadelfirmansyah/Documents/"Lumos Final Project"/lumos-api-ts/api/transaction/job.sh ${support} ${confidence} ${total_data}`,
+    `/home/fadelfirmansyah/Documents/"Lumos Final Project"/lumos-api-prod/api/transaction/job.sh ${support} ${confidence} ${total_data}`,
     { shell: '/bin/bash' },
     async (err, stdout, stderr) => {
       if (stdout !== '') {
@@ -207,9 +206,6 @@ async function trxByCustController(req: Request, res: Response) {
 async function claimController(req: Request, res: Response) {
   const [result, status] = await ServiceClaimTrx(req.params.trx, String(req.body.cust_id));
 
-  console.log(typeof req.body.cust_id);
-
-  console.log('///');
   if (status !== 'Error') {
     res.status(200).json({
       status: 200,
